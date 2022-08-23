@@ -10,15 +10,15 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/vientosdeazur/06-ResServer.git"
+    "url": "git+https://github.com/vientosdeazur/08-Usersproducts.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/vientosdeazur/06-ResServer/issues"
+    "url": "https://github.com/vientosdeazur/08-Usersproducts/issues"
   },
-  "homepage": "https://github.com/vientosdeazur/06-ResServer#readme",
+  "homepage": "https://github.com/vientosdeazur/08-Usersproducts#readme",
   "dependencies": {
     "dotenv": "^16.0.1",
     "express": "^4.18.1",
