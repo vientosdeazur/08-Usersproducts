@@ -5,7 +5,7 @@ const logger = require('./loggers');
 
 const startServer = async () => {
 
-    await mongoose();
+    await mongooseLoader();
     logger.info('DB LOADED AND CONNECTED');
 
     const server = new ExpressServer;
