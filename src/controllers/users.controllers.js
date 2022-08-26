@@ -1,9 +1,23 @@
 const express = require ('express');
-const User = require('../models/users');
+const userService = require('../services/user.services')
+
+const getById = async (req,res,next) => {
+
+    try {
+
+        const result = {
+            user: await userService.findById(req.params.id)
+        }
+        res.status(200).json(result);   
+    } catch (err){
+        next (err);
+    }
+
+}
 
 const getAllUsers = async (req, res,next) => {
     try{
-        let users = await User.find();
+        let users = await userService.findAll();
         res.status(200).json(users);    
     }
     catch (err){
@@ -18,7 +32,7 @@ const createUser = async (req, res,next) => {
   
     try {
         let user = req.body;
-    user = await User.create(user) ;
+    user = await userService.save(user) ;
   
     const result = {
         message: 'User Created',
@@ -34,14 +48,14 @@ const createUser = async (req, res,next) => {
   }
 
 
-const modifyUser = async (req, res,next) => {
+/* const modifyUser = async (req, res,next) => {
 
     try{
     
         const {id} = req.params;
     let user = req.body;
     user._id=id;
-    User.updateOne(user);
+    userService.update(user);
 
     
 
@@ -54,21 +68,27 @@ const modifyUser = async (req, res,next) => {
         next(err);
     }
     
-  }
+  } 
+*/
 
+const updateUser = async (req, res,next) => {
 
-const updateUser = (req, res) => {
+    try{
+        const id = req.params.id;
+        let user = req.body;
+        
+        const userUpdated = await userService.update(id,user);
+    
+        const result = {
+            message: 'User Updated',
+            user
+        }
+    
+        res.json(result);    
+    }catch (err) {
+        next(err);
 
-    const {id} = req.params;
-    let user = req.body;
-    user.id = id;
-
-    const result = {
-        message: 'User Updated',
-        user
     }
-
-    res.json(result);
   }
 
 
@@ -76,8 +96,8 @@ const deleteUser = async(req, res,next) => {
 
     try{
 
-    const {id} = req.params;
-    let user = await User.findById(id);
+    const id = req.params.id;
+    let user = await userService.remove(id);
     user.remove();
 
     const result = {
@@ -94,7 +114,9 @@ const deleteUser = async(req, res,next) => {
 module.exports = {
     getAllUsers,
     createUser,
-    modifyUser,
+    // modifyUser,
     updateUser,
-    deleteUser
+    deleteUser,
+    getById
+    
 }
