@@ -1,5 +1,7 @@
 const express = require ('express');
-const userService = require('../services/user.services')
+const userService = require('../services/user.services');
+const Success = require ('../handlers/succesHandlers');
+
 
 const getById = async (req,res,next) => {
 
@@ -8,7 +10,7 @@ const getById = async (req,res,next) => {
         const result = {
             user: await userService.findById(req.params.id)
         }
-        res.status(200).json(result);   
+        res.json(new Success(result));   
     } catch (err){
         next (err);
     }
@@ -17,8 +19,8 @@ const getById = async (req,res,next) => {
 
 const getAllUsers = async (req, res,next) => {
     try{
-        let users = await userService.findAll();
-        res.status(200).json(users);    
+        let users = await userService.findAll(req.query.filter,req.query.options);
+        res.json(new Success (users));    
     }
     catch (err){
         next (err);
@@ -39,7 +41,7 @@ const createUser = async (req, res,next) => {
         user  
       }
       
-    res.status(201).json(result);
+    res.json(new Success(result));
 
     } catch (err){
         next(err);
@@ -84,7 +86,7 @@ const updateUser = async (req, res,next) => {
             user
         }
     
-        res.json(result);    
+        res.json(new Success(result));    
     }catch (err) {
         next(err);
 
@@ -104,7 +106,7 @@ const deleteUser = async(req, res,next) => {
         message: ` User with id: ${id} Deleted`
     }
     
-    res.json(result);
+    res.json(new Success (result));
     }
     catch (err) {
         next(err);
