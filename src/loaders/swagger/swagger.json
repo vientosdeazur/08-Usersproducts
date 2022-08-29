@@ -2,7 +2,7 @@
   "swagger": "2.0",
   "info": {
     "description": "This is an Api Base to start new projects ",
-    "version": "0.0.1",
+    "version": "1.0.0",
     "title": "Base API REST",
     "termsOfService": "http://swagger.io/terms/",
     "contact": {
