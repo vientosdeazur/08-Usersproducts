@@ -3,6 +3,7 @@ const morgan = require('morgan');
 const { listen } = require('express/lib/application');
 const config = require('../../config');
 const {routes} = require('../../routes/users.routes');
+const {routesauth} = require('../../routes/auth.routes');
 const res = require('express/lib/response');
 const logger = require('../loggers/index'); 
 const swaggerUi = require ('swagger-ui-express');
@@ -14,6 +15,7 @@ class ExpressServer {
         this._middlewares();
         this._swagerConfig();
         this.basePath = ''; //config.api.prefix
+        this.basePathAuth = `/auth`;
         this._routes();
         this._notFound();
         this._errorHandler();
@@ -27,6 +29,7 @@ class ExpressServer {
         
     _routes (){
         this.app.use (`${this.basePath}`, routes);
+        this.app.use (`${this.basePathAuth}`,routesauth);
         this.app.head("/status", (req,res)=> {
             res.status(200).end();
         });

@@ -1,8 +1,8 @@
-const {check , validationResult} = require ('express-validator');
+const {check} = require ('express-validator');
 const AppError = require ('../../errors/appError');
 const userService = require('../../services/user.services');
 const {ROLES} = require ('../../constant/index');
-
+const {_validationResult} = require ('../commons');
 
 const _nameRequired = check('name','Name is required').not().isEmpty();
 const _lastnameRequired = check('lastname','LastName is required').not().isEmpty();
@@ -55,14 +55,6 @@ const _roleValid = check('role').optional().custom(
 const _idRequired = check('id').not().isEmpty();
 const _idIsMongoDb = check('id').isMongoId();
 
-const _validationResult = (req,res,next) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()){
-        throw new AppError ('Validation errors', 400,errors.errors); 
-    }
-    next();
-
-}
 
 const deleteRequestValidation = [
     _idIsMongoDb,
