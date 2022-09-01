@@ -18,7 +18,11 @@ module.exports = {
     swagger: {
         path: '/api-docs'
     },
-    databaseURL:process.env.DATABASE_URL
+    databaseURL:process.env.DATABASE_URL,
+    auth: {
+            secret: process.env.AUTH_SECRET,
+            ttl: process.env.AUTH_TTL
+    }
        
        
 }
