@@ -1,5 +1,6 @@
 const {check} = require ('express-validator');
 const AppError = require ('../../errors/appError');
+const {_validJWT} = require ('../auth');
 const userService = require('../../services/user.services');
 const {ROLES} = require ('../../constant/index');
 const {_validationResult} = require ('../commons');
@@ -85,6 +86,7 @@ const putRequestValidation = [
 
 
 const postRequestValidation = [
+    _validJWT,
     _nameRequired,
     _lastnameRequired,
     _emailRequired,
