@@ -1,5 +1,5 @@
 const {check} = require ('express-validator');
-const {validToken} = require ('../../services/auth.services');
+const {validToken,validRole} = require ('../../services/auth.services');
 const userService = require('../../services/user.services');
 const {_validationResult} = require ('../commons');
 
@@ -20,6 +20,17 @@ const _validJWT = async (req,res,next)=>{
     }
 }
 
+hasRole = (...roles) => {
+   
+    return(req,res,next) => {
+        try{validRole(req.user, ...roles);
+            next();
+        }catch(err){
+        next(err);
+        }    
+    }
+}
+
 const postLoginRequestValidation =  [
 
     _emailRequired,
@@ -30,4 +41,4 @@ const postLoginRequestValidation =  [
 ]
 
 
-module.exports = {postLoginRequestValidation,_validJWT};
+module.exports = {postLoginRequestValidation,_validJWT,hasRole};

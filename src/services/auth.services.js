@@ -65,15 +65,21 @@ const validToken = async (token) =>{
 
     
         //validar que el token sea integro
-        const {id} = jwt.verify(token, config.auth.secret);
-        logger.info (`User id in the token ${id}`);
-    
+        let id;
+        try {
+            const obj = jwt.verify(token, config.auth.secret);    
+            id = obj.id;
+        } catch (verifyError) {
+            throw new AppError('Authentication Failed / Invalid Token',401,token);
+            
+        }
+        
     
         //validar que haya usuario en db
 
         const user = await userService.findById(id);
         if (!user){
-            throw new AppError ('Invalid Token',401);
+            throw new AppError ('Invalid Token - User not found',401);
         }
 
     //validar si el usuario esta habilitado
@@ -89,6 +95,13 @@ const validToken = async (token) =>{
     }
 }
 
+const validRole = (user, ...roles) => {
+    if(!roles.includes(user.role)){
+        throw new AppError('Authentication Failed User dont have Privileges',401);
+    }
+    return true;
+}
+
 _encrypt = (id) => {
 
     return jwt.sign({id}, config.auth.secret, { expiresIn: config.auth.ttl });
@@ -97,5 +110,6 @@ _encrypt = (id) => {
 
 module.exports = {
     login,
-    validToken
+    validToken,
+    validRole
 };
